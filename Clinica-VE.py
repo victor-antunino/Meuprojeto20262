@@ -46,7 +46,7 @@ while True:
             print("CPF nao cadastrado.")
             cadastro = input("Deseja fazer autocadastro? Digite S para sim ou N para não: ").lower()
 
-            if cadastro == "s":
+            if cadastro == "s" or cadastro == "sim":
                 nome = input("Nome: ").strip()
                 senha = input("Crie uma senha: ")
                 telefone = input("Telefone: ").strip()
@@ -122,12 +122,63 @@ while True:
                                 print("Todos os campos devem ser preenchidos.")
                             else:
                                 Dentistas.append([código, nome, cro, Especialidade ])
-                                print("Dentistas cadastrados com sucesso!")
+                                print("\nDentistas cadastrados com sucesso!")
 
                     elif opção_dentista == "2":
                         if len(Dentistas) == 0:
                             print("Nunhum dentista cadastrado.")
                         else:
                             for dentista in Dentistas:
-                                print("ID:", dentista[0], "| Nome:", dentista[1], "| CRO:", dentista[2], "| Especialidade:", dentista[3])
-                                
+                                print("\n ID:", dentista[0], "\n Nome:", dentista[1], "\n CRO:", dentista[2], "\n Especialidade:", dentista[3])
+
+                    elif opção_dentista == "3":
+                        codigo = input("Buscar pelo ID:")
+                        indice = -1
+
+                        for i in range(len(Dentistas)):
+                            if Dentistas [i][0] == codigo:
+                                indice = i
+                                break
+                            
+                        if indice == -1:
+                                print("Dentista não encontrado.")
+                        else:
+                            print("ID: ", Dentistas[indice][0])
+                            print("Nome: ", Dentistas[indice][1])
+                            print("CRO: ", Dentistas[indice][2])
+                            print("Especialidade: ", Dentistas[indice][3])
+                    
+                    elif opção_dentista == "4":
+                        codigo = input("ID do dentista para atualizar:" )
+                        indice = -1
+                        for i in range(len(Dentistas)):
+                            if Dentistas [i][0] == codigo:
+                                indice = i
+                                break
+
+                        if indice == -1:
+                            print("Dentista não encontrado.")
+                        else:
+                            print("1 - Alterar nome:")
+                            print("\n2 - Alterar CRO:")
+                            print("\n3 - Alterar especialidade:")
+                            campo = input("escolha uma opção:")
+
+                            if campo == "1":
+                                novo = input("Novo nome: ")
+                                if novo != "":
+                                    Dentistas[indice][1] = novo
+                                    print("Nome Atualizado.")
+                                else:
+                                    print("Nome não pode ficar vazio.")
+                            elif campo == "2":
+                                novo = input("Novo CRO: ")
+                                existe = False
+                                for i in range(len(Dentistas)):
+                                    if Dentistas[i][2] == novo and i != indice:
+                                        existe == True
+                                if novo == "" or existe == True:
+                                    print("CRO vazio ou já cadastrado.")
+                                else:
+                                    Dentistas[indice][2] == novo
+                                    print("CRO atualizado.")
