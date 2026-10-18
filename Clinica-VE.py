@@ -13,39 +13,61 @@ ind2 = -1
 
 while True:
     print("\n========================================")
-    print("      CLÍNICA ODONTOLOGIA — MENU      ")
+    print("      CLÍNICA ODONTOLÓGICA — MENU      ")
     print("========================================")
     print("\n1 - Acessar como paciente")
     print("2 - Acessar como administrador")
     print("0 - Sair do sistema")
 
-    opção = input("\nDigite qual opção deseja: ")
+    opcao = input("\nDigite qual opção deseja: ")
 
-    if opção == "1":
-        print("\nVocê está acessando como paciente.")
-        cpf = input("\nDigite seu CPF: ")
+    if opcao == "1":
+        CPF_paciente_logado = ""
+        cpf = input("Informe seu CPF: ").strip()
 
-        paciente_encontrado = -1
-
+        indice_paciente = -1
         for i in range(len(Pacientes)):
             if Pacientes[i][1] == cpf:
-                paciente_encontrado = i
+                indice_paciente = i
                 break
 
-        if paciente_encontrado == -1:
-            print("\nCPF não foi encontrado. Vamos realizar seu cadastro!")
-            nome = input("Fale seu nome: ")
-            telefone = input("Digite seu telefone: ")
-            senha = input("Crie uma senha: ")
+        if cpf == "":
+            print("O CPF nao pode ficar vazio.")
 
-            Pacientes.append([nome, cpf, senha, telefone, "", "", False])
+        elif indice_paciente != -1:
+            senha = input("Informe sua senha: ")
+            if Pacientes[indice_paciente][2] == senha:
+                CPF_paciente_logado = cpf
+                print("Bem-vindo(a),", Pacientes[indice_paciente][0] + "!")
+            else:
+                print("Senha incorreta. Acesso negado.")
 
-            paciente_encontrado = len(Pacientes) - 1
-            print("\nCadastro realizado com sucesso!")
-            print(f"\nBem-vindo de volta, {Pacientes[paciente_encontrado][0]}!")
+        else:
+            print("CPF nao cadastrado.")
+            cadastro = input("Deseja fazer autocadastro? Digite S para sim ou N para não: ").lower()
+
+            if cadastro == "s":
+                nome = input("Nome: ").strip()
+                senha = input("Crie uma senha: ")
+                telefone = input("Telefone: ").strip()
+
+                cpf_invalido = False
+                for i in range(len(cpf)):
+                    if cpf[i] < "0" or cpf[i] > "9":
+                        cpf_invalido = True
+                        break
+
+                if nome == "" or senha == "" or telefone == "":
+                    print("Cadastro cancelado: preencha todos os campos.")
+                elif len(cpf) != 11 or cpf_invalido == True:
+                    print("Cadastro cancelado: o CPF deve ter 11 digitos.")
+                else:
+                    Pacientes.append([nome, cpf, senha, telefone, "", "", False])
+                    CPF_paciente_logado = cpf
+                    print("Cadastro realizado! Bem-vindo(a),", nome + "!")
 
  # ============ acesso administrador ============       
-    elif opção == "2":
+    elif opcao == "2":
         print("\n ======= LOGIN ADIMINISTRADOR =======")
         login = input("\nDigite seu login: ")
         senha = input("\nDigite sua senha: ")
