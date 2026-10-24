@@ -1,7 +1,7 @@
 # PROJETO CLINICA DE ODONTOLOGIA - VE.
 adms = [["Victor", "12345", True]]
 Pacientes = [["Enzo", "15338918420", "12345", "83998279055", "", "", False]]
-Dentistas = []
+Dentistas = [["D1", "Larissa", "123", "Ortodontia"],["D2", "Maria", "321", "Endodontia"],["D3", "Julia", "999", "Facetas"]]
 Consultorios = []
 Agendamentos = []
 adm_logado = False
@@ -66,7 +66,8 @@ while True:
                     CPF_paciente_logado = cpf
                     print("Cadastro realizado! Bem-vindo(a),", nome + "!")
 
- # ============ acesso administrador ============       
+ # ============ acesso administrador ============    
+    
     elif opcao == "2":
         print("\n ======= LOGIN ADIMINISTRADOR =======")
         login = input("\nDigite seu login: ")
@@ -182,3 +183,58 @@ while True:
                                 else:
                                     Dentistas[indice][2] == novo
                                     print("CRO atualizado.")
+                            elif campo == "3":
+                                novo = input("Nova especialidade:")
+                                if novo != "":
+                                    Dentistas[indice][3] = novo
+                                    print("Especialidade atualizada.")
+                                else:
+                                    print("Especialidade não pode ficar vazia.")
+                            else:
+                                print("Opção invalida.")
+
+                    elif opção_dentista == "5":
+                        codigo = input("ID do dentista para remover:")
+                        indice = -1
+                        for i in range(len(Dentistas)):
+                            if Dentistas[i][0] == codigo:
+                                indice = 1
+                                break
+                        if indice == -1:
+                            print("Dentista não encontrado.")
+                        else:
+                            tem_consulta = False
+                            for consulta in Agendamentos:
+                                if consulta[1] == codigo:
+                                    tem_consulta = True
+                            if tem_consulta == True:
+                                print("Não pode remover: o dentista possui consultas.")
+                            else:
+                                confirmar = input("Confirmar remoção? (s/n):")
+                                if confirmar == "s":
+                                    Dentistas.pop(indice)
+                                    for sala in Consultorios:
+                                        for j in range(len(sala[1])):
+                                            if sala[1][j] == codigo:
+                                                sala[1].pop(j)
+                                                break
+                                    print("Dentista removido.")
+                                else:
+                                    print("Remoção Cancelada.")
+
+                elif opção_dentista == "0":
+                    break
+                else:
+                    print("Opção Invalida.")
+
+                if opção_adm == "2":
+                    while True:
+                        print("\n===== GESTÃO DE CONSULTORIOS =====")
+                        print("1 - Cadastrar sala")
+                        print("2 - Listar salas")
+                        print("3 - Vincular dentista a sala")
+                        print("0 - Voltar")
+                        opcão_sala = input("escolha uma opção:")
+
+
+                        
