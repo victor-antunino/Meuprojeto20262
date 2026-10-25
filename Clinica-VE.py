@@ -239,25 +239,99 @@ while True:
                         else:
                             print("Opção Invalida.")
 
-                    if opção_adm == "2":
-                        while True:
-                            print("\n===== GESTÃO DE CONSULTORIOS =====")
-                            print("1 - Cadastrar sala")
-                            print("2 - Listar salas e dentistas vinculados")
-                            print("3 - Vincular dentista a uma sala")
-                            print("4 - Desvincular dentista de uma sala")
-                            print("0 - Voltar")
-                            opção_sala = input("escolha uma opção:")
+                if opção_adm == "2":
+                       while True:
+                        print("\n===== GESTÃO DE CONSULTORIOS =====")
+                        print("1 - Cadastrar sala")
+                        print("2 - Listar salas e dentistas vinculados")
+                        print("3 - Vincular dentista a uma sala")
+                        print("4 - Desvincular dentista de uma sala")
+                        print("0 - Voltar")
+                        opção_sala = input("escolha uma opção:")
 
-                            if opção_sala == "1":
-                                sala_nome = input("Nome da sala: ")
-                                existe = False
+                        if opção_sala == "1":
+                            sala_nome = input("Nome da sala: ")
+                            existe = False
+                            for sala in Consultorios:
+                                if sala[0] == sala_nome:
+                                    existe = True
+                                    break
+                            if sala_nome == "" or existe == True:
+                                print("Sala vazia ou ja castrada!.")
+                            else:
+                                Consultorios.append([sala_nome, []])
+                                print("Sala cadastrada.")
+
+                        elif opção_sala == "2":
+                            if len(Consultorios) == 0:
+                                print("Nenhuma sala cadastrada.")
+                            else:
                                 for sala in Consultorios:
-                                    if sala[0] == sala_nome:
-                                        existe = True
+                                    print("\nSala:",sala[0])
+                                    if len (sala[1]) == 0:
+                                        print("Nenhum dentista vinculado.")
+                                    else:
+                                        for codigo in sala[1]:
+                                            nome_dentista = "não encotrado"
+                                            for dentista in Dentistas:
+                                                if dentista[0] == codigo:
+                                                    nome_dentista = dentista[1]
+                                                    break
+                                            print("ID:", codigo, "\nNome:", nome_dentista)
+
+                        elif opção_sala == "3":
+                            sala_nome = input("Nome da sala: ")
+                            indice_sala = -1
+                            for i in range(len(Consultorios)):
+                                if Consultorios[i][0] == sala_nome:
+                                    indice_sala = i
+                                    break
+                            if indice_sala == -1:
+                                    print("Sala não encontrada.")
+                            else:
+                                codigo = input("ID do dentista: ")
+                                dentista_existe = False
+                                for dentista in Dentistas:
+                                    if dentista[0] == codigo:
+                                        dentista_existe = True
                                         break
-                                if sala_nome == "" or existe == True:
-                                    print("Sala vazia ou ja castrada!.")
+                                if dentista_existe == False:
+                                    print("Dentista não encontrado.")
                                 else:
-                                    Consultorios.append([sala_nome, []])
-                                    print("Sala cadastrada.")
+                                    ja_vinculado = False
+                                    for item in Consultorios[indice_sala][1]:
+                                        if item == codigo:
+                                            ja_vinculado = True
+                                            break
+                                    if ja_vinculado == True:
+                                        print("Esse dentista ja esta vinculado a esta sala.")
+                                    else:
+                                        Consultorios[indice_sala][1].append(codigo)
+                                        print("Dentista vinculado a sala!")
+                                        
+                        elif opção_sala == "4":
+                            sala_nome = input("Nome da sala: ")
+                            indice_sala = -1
+                            for i in range(len(Consultorios)):
+                                if Consultorios[i][0] == sala_nome:
+                                    indice_sala = i
+                                    break
+                            if indice_sala == -1:
+                                print("Sala não encontrada.")
+                            else:
+                                codigo = input("ID do dentista para desvincular:")
+                                indice_vinculo = -1
+                                for i in range(len(Consultorios[indice_sala][1])):
+                                    if Consultorios[indice_sala][1][i] == codigo:
+                                        indice_vinculo = i
+                                        break
+                                if indice_vinculo == -1:
+                                    print("O dentista não esta vinculado a esta sala.")
+                                else:
+                                    Consultorios[indice_sala][1].pop(indice_vinculo)
+                                    print("Vinculo removido.")
+
+                        elif opção_sala == "0":
+                            break
+                        else:
+                            print("Opção invalida")
