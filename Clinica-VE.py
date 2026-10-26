@@ -335,3 +335,39 @@ while True:
                             break
                         else:
                             print("Opção invalida")
+
+                elif opção_adm == "3":
+                    while True:
+                        print("\n===== GESTÃO DE PACIENTES =====")
+                        print("1 - Cadastrar paciente")
+                        print("2 - Listar pacientes")
+                        print("3 - Buscar por nome ou CPF")
+                        print("4 - Atualizar paciente")
+                        print("5 - Registrar observações / alergias")
+                        print("6 - Remover pacientes")
+                        print("0 - Voltar")
+                        opção_cadastro = input("Escolha uma opção: ")
+
+                        if opção_cadastro == "1":
+                            nome = input("Nome:")
+                            cpf = input("CPF (11 digitos): ")
+                            senha = input("Senha: ")
+                            telefone = input("Telefone: ")
+                            for i in range(len(cpf)):
+                                if cpf[i] < "0" or cpf[i] > "9":
+                                    cpf_invalido = True
+                                    break
+                            existe = False
+                            for paciente in Pacientes:
+                                if paciente[1] == cpf:
+                                    existe = True
+                                    break
+                            if nome == "" or senha == "" or telefone == "":
+                                print(" Todos os campos devem ser preeenchidos.")
+                            elif len(cpf) != 11 or cpf_invalido == True:
+                                print(" CPF precisa ter exatamente 11 digitos numericos.")
+                            elif existe == True:
+                                print("Esse CPF já esta cadastrado.")
+                            else:
+                                Pacientes.append([nome, cpf, senha, telefone, "", "", False])
+                                print("Paciente cadastrado!")
