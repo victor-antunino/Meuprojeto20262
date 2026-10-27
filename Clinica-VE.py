@@ -510,3 +510,37 @@ while True:
                             break
                         else:
                             print("Opção invalida.")
+
+                elif opção_adm == "2":
+                    while True:
+                        print("\n===== AGENDA GERAL =====")
+                        print("1 - Vizualizar todas as consultas")
+                        print("2 - Filtrar por dentista")
+                        print("3 - Filtrar por data")
+                        print("4 - Cancelar consulta de qualquer paciente")
+                        print("0 - Voltar")
+                        opção_agenda = input("Escolha uma opção: ")
+
+                        if opção_agenda == "1":
+                            if len(Agendamentos) == 0:
+                                print("Não a consultas na agenda. ")
+                            else:
+                                for i in range(len(Agendamentos)):
+                                    consulta = Agendamentos[i]
+                                    nome_paciente = "Não encontrado"
+                                    nome_dentista = "Não encontrado"
+                                    for paciente in Pacientes:
+                                        if paciente[1] == consulta[0]:
+                                            nome_dentista = dentista[0]
+                                            break
+                                    for dentista in Dentistas:
+                                        if dentista[0] == consulta[1]:
+                                            nome_dentista = dentista[1]
+                                            break
+                                    print("\n Número:", i + 1)
+                                    print("Paciente:", nome_paciente, "| CPF:", consulta[0])
+                                    print("Dentista:", nome_dentista, "| ID:", consulta[1])
+                                    print("Data:", consulta[2], "| Horário:", consulta[3])
+
+                        elif opção_agenda == "2":
+                            codigo = input("ID do dentista: ")
