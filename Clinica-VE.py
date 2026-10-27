@@ -353,6 +353,7 @@ while True:
                             cpf = input("CPF (11 digitos): ")
                             senha = input("Senha: ")
                             telefone = input("Telefone: ")
+                            cpf_invalido = False
                             for i in range(len(cpf)):
                                 if cpf[i] < "0" or cpf[i] > "9":
                                     cpf_invalido = True
@@ -371,3 +372,141 @@ while True:
                             else:
                                 Pacientes.append([nome, cpf, senha, telefone, "", "", False])
                                 print("Paciente cadastrado!")
+
+                        elif opção_cadastro == "2":
+                            if len(Pacientes) == 0:
+                                print("Nenhum paciente cadastrado.")
+                            else:
+                                for pacientes in Pacientes:
+                                    print("\nNome: ", pacientes[0],"| CPF: ", pacientes[1])
+                                    print("Telefone: ", pacientes[3])
+                                    print("Observações: ", pacientes[4])
+                                    print("Alergias: ", pacientes[5])
+
+                        elif opção_cadastro == "3":
+                            busca = input("Informe nome ou CPF: ")
+                            encontrou = False
+                            for pacientes in Pacientes:
+                                if pacientes[0] == busca or pacientes[1] == busca:
+                                    encontrou = True
+                                    print("\nNome: ", paciente[0], "| CPF: ", paciente[1])
+                                    print("Telefone:", paciente[3])
+                                    print("Observações: ", paciente[4])
+                                    print("Alergias: ", paciente[5])
+                            if encontrou == False:
+                                print("Paciente não encontrado.")
+
+                        elif opção_cadastro == "4":
+                            cpf = input("CPF do paciente para atualizar: ")
+                            indice = -1
+                            for i in range(len(Pacientes)):
+                                if Pacientes[i][1] == cpf:
+                                    indice = i
+                                    break
+                            if indice == -1:
+                                print("Paciente não encontrado.")
+                            else:
+                                print("\n1 - Alterar nome")
+                                print("2 - Alterar CPF")
+                                print("3 - Alterar senha")
+                                print("4 - Alterar telefone")
+                                campo = input("Escolha uma opção:")
+                                if campo == "1":
+                                    novo = input("Novo nome: ")
+                                    if novo == "":
+                                        print("Nome vazio não é permitido.")
+                                    else:
+                                        Pacientes[indice][0] = novo
+                                        print(" Nome atualizado!")
+                                elif campo == "2":
+                                    novo = input("Novo CPF: ")
+                                    cpf_invalido = False
+                                    for i in range(len(novo)):
+                                        if novo[i] < "0" or novo[i] > "9":
+                                            cpf_invalido = True
+                                            break
+                                    existe = False
+                                    for i in range(len(Pacientes)):
+                                        if i != indice and Pacientes[i][1] == novo:
+                                            existe = True
+                                            break
+                                    if len(novo) != 11 or cpf_invalido == True or existe == True:
+                                        print("CPF inavalido ou já cadastrado.")
+                                    else:
+                                        for consulta in Agendamentos:
+                                            if consulta[0] == cpf:
+                                                consulta[1] == novo
+                                        Pacientes[indice][1] = novo
+                                        print("CPF atualizado (Inclusive nas consultas).")
+
+                                elif campo == "3":
+                                    novo = input("Nova senha: ")
+                                    if novo == "":
+                                        print("Senha não pode ficar vazia.")
+                                    else:
+                                        Pacientes[indice][2] = novo
+                                        print("Senha Atualizada!")
+
+                                elif campo == "4":
+                                    novo = input("Novo Telefone: ")
+                                    if novo == "":
+                                        print("Telefone não pode ficar vazio.")
+                                    else:
+                                        Pacientes[indice][3] = novo
+                                        print("Telefone Atualizado!")
+                                else:
+                                    print("Opção Invalida.")
+
+                        elif opção_cadastro == "5":
+                            cpf = input("CPF do paciente: ")
+                            indice = -1
+                            for i in range(len(Pacientes)):
+                                if Pacientes[i][1] == cpf:
+                                    indice = i
+                                    break
+                            if indice == -1:
+                                print("Paciente não encontrado.")
+                            else:
+                                print("\n1- Observações")
+                                print("2- Alergias")
+                                campo = input("Escolha uma opção: ")
+                                if campo == "1":
+                                    novo = input("Nova Observação: ")
+                                    Pacientes[indice][4] = novo
+                                    print("Observação Atualizada!")
+                                elif campo == "2":
+                                    novo = input("Nova alergia: ")
+                                    Pacientes[indice][5] = novo
+                                    print("Alergia Atualizada!")
+                                else:
+                                    print("Opção invalida.")
+
+                        elif opção_cadastro == "6":
+                            cpf = input("CPF do paciente para remover: ")
+                            indice = -1
+                            for i in range(len(Pacientes)):
+                                if Pacientes[i][1] == cpf:
+                                    indice = i
+                                    break
+                            if indice == -1:
+                                print("Paciente não encontrado.")
+                            else:
+                                 tem_consulta = False
+                                 for consulta in Agendamentos:
+                                    if consulta[0] == cpf:
+                                        tem_consulta = True
+                                        break                             
+                                 if tem_consulta == True:
+                                    print("Não pode remover paciente com consultas marcadas.")
+                                 else:
+                                    confirmar = input("Confirmar remoção? (s/n): ")
+                                    if confirmar == "s" or confirmar == "S":
+                                        Pacientes.pop(indice)
+                                        print("Paciente removido.")
+                                    else:
+                                        print("Remoção cancelada.")
+
+                        elif opção_cadastro == "0":
+                            break
+                        else:
+                            print("Opção invalida.")
