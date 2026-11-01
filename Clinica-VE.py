@@ -1,11 +1,8 @@
-# PROJETO CLINICA DE ODONTOLOGIA - VE.
 adms = [["Victor", "12345", True]]
-Dentistas = [["D1", "Larissa", "123", "Ortodontia"], ["D2", "Maria", "321", "Endodontia"], ["D3", "Julia", "999", "Facetas"]]
+Dentistas = [["D1", "Pedro", "123", "Ortodontia"], ["D2", "Léticia", "321", "Endodontia"], ["D3", "José", "999", "Facetas"]]
 Pacientes = []
 Consultorios = []
 Agendamentos = []
-consulta_agendadas = []
-consultas_canceladas = []
 adm_logado = False
 CPF_paciente_logado = ""
 ind = -1
@@ -92,47 +89,132 @@ while True:
 
                 elif opcao_paciente == "2":
                     print("\n--- AGENDAR CONSULTA ---")
-                    print("Dentistas disponíveis:")
-                    for d in range(len(Dentistas)):
-                        print(f"[{Dentistas[d][0]}] - Dr(a). {Dentistas[d][1]}")
+                    if len(Dentistas) == 0:
+                        print("Não existem dentistas cadastrados.")
+                    else:
+                        print("\nDentistas disponíveis:")
 
-                    id_dentista = input("Digite o código do dentista desejado: ")
+                        for dentista in Dentistas:
+                            print("ID:", dentista[0], "| Nome:", dentista[1], "| Especialidade:", dentista[3])
 
-                    data_valida = False
-                    while data_valida == False:
-                        data_consulta = input("Digite a data (Dia/Mês/Ano): ")
-                        horario_consulta = input("Digite o horário (00:00): ")
+                        id_dentista = input("Digite o ID do dentista desejado: ")
 
-                        if len(data_consulta) == 10 and data_consulta[2] == '/' and data_consulta[5] == '/' and len(horario_consulta) == 5 and horario_consulta[2] == ':':
+                        dentista_existe = False
+
+                        for dentista in Dentistas:
+                            if dentista[0].lower() == id_dentista.lower():
+                                dentista_existe = True
+                                id_dentista = dentista[0]
+                                break
+
+                        if dentista_existe == False:
+                            print("Dentista não encontrado.")
+                        else:
+                            data_valida = False
+
+                            while data_valida == False:
+                                data_consulta = input("Digite a data (DD/MM/AAAA): ")
+
+                                formato_valido = True
+
+                                if len(data_consulta) != 10:
+                                    formato_valido = False
+
+                                elif data_consulta[2] != "/" or data_consulta[5] != "/":
+                                    formato_valido = False
+
+                                else:
+                                    for i in range(len(data_consulta)):
+                                        if i != 2 and i != 5:
+                                            if data_consulta[i] < "0" or data_consulta[i] > "9":
+                                                formato_valido = False
+                                                break
+
+                                if formato_valido == False:
+                                    print("Formato inválido. Use DD/MM/AAAA.")
+                                else:
+                                    dia = int(data_consulta[0:2])
+                                    mes = int(data_consulta[3:5])
+                                    ano = int(data_consulta[6:10])
+
+                                    dias_no_mes = 31
+
+                                    if mes == 4 or mes == 6 or mes == 9 or mes == 11:
+                                        dias_no_mes = 30
+
+                                    elif mes == 2:
+                                        dias_no_mes = 28
+
+                                        if ano % 400 == 0 or (ano % 4 == 0 and ano % 100 != 0):
+                                            dias_no_mes = 29
+
+                                    if ano < 2026 or mes < 1 or mes > 12:
+                                        print("Data inválida.")
+
+                                    elif dia < 1 or dia > dias_no_mes:
+                                        print("Esse dia não existe no mês informado.")
+                                    else:
+                                        data_valida = True
+
+
+                            horario_valido = False
+
+                            while horario_valido == False:
+                                horario_consulta = input("Digite o horário (HH:MM): ")
+
+                                formato_valido = True
+
+                                if len(horario_consulta) != 5:
+                                    formato_valido = False
+
+                                elif horario_consulta[2] != ":":
+                                    formato_valido = False
+                                else:
+                                    for i in range(len(horario_consulta)):
+                                        if i != 2:
+                                            if horario_consulta[i] < "0" or horario_consulta[i] > "9":
+                                                formato_valido = False
+                                                break
+
+                                if formato_valido == False:
+                                    print("Formato inválido. Use HH:MM.")
+                                else:
+                                    hora = int(horario_consulta[0:2])
+                                    minuto = int(horario_consulta[3:5])
+
+                                    if hora < 0 or hora > 23 or minuto < 0 or minuto > 59:
+                                        print("Esse horário não existe.")
+                                    else:
+                                        horario_valido = True
 
                             conflito = False
-                            for c in range(len(consulta_agendadas)):
-                                if consulta_agendadas[c][1] == id_dentista and consulta_agendadas[c][2] == data_consulta and consulta_agendadas[c][3] == horario_consulta:
-                                    conflito = True
-                                    break
+
+                            for consulta in Agendamentos:
+                                if consulta[2] == data_consulta and consulta[3] == horario_consulta:
+                                    if consulta[1].lower() == id_dentista.lower():
+                                        conflito = True
+                                        break
+
+                                    elif consulta[0] == CPF_paciente_logado:
+                                        conflito = True
+                                        break
 
                             if conflito == True:
-                                print("Este dentista já possui uma consulta agendada nesta data e hora escolha outro")
+                                print("Horário indisponível.")
+                                print("O dentista ou o paciente já possui uma consulta nesse horário.")
                             else:
-                                data_valida = True  # Passou por todas as validações!
-                        else:
-                            print("Use apenas Dia/Mês/Ano e 00:00")
-
-                    novo_agendamento = [CPF_paciente_logado, id_dentista, data_consulta, horario_consulta]
-                    consulta_agendadas.append(novo_agendamento)
-                    Agendamentos.append(novo_agendamento)
-                    print("Consulta agendada com sucesso")
-
-                        # OPÇÃO 3: Visualizar Consultas
+                                novo_agendamento = [CPF_paciente_logado, id_dentista, data_consulta, horario_consulta]
+                                Agendamentos.append(novo_agendamento)
+                                print("Consulta agendada com sucesso!")
 
                 elif opcao_paciente == "3":
                     print("\n--- Minhas Consultas ---")
                     tem_consulta = False
 
-                    for c in range(len(consulta_agendadas)):
-                        if consulta_agendadas[c][0] == CPF_paciente_logado:
+                    for c in range(len(Agendamentos)):
+                        if Agendamentos[c][0] == CPF_paciente_logado:
                             tem_consulta = True
-                            print(f"Dentista ID: {consulta_agendadas[c][1]} | Data: {consulta_agendadas[c][2]} | Horário: {consulta_agendadas[c][3]}")
+                            print(f"Dentista ID: {Agendamentos[c][1]} | Data: {Agendamentos[c][2]} | Horário: {Agendamentos[c][3]}")
 
                     if tem_consulta == False:
                         print("Você não tem consultas agendadas.")
@@ -141,32 +223,32 @@ while True:
                     print("\n--- Cancelar Consulta ---")
                     data_cancelar = input("Digite a data da consulta para cancelar (Dia/Mês/Ano): ")
                     horario_cancelar = input("Digite o horário da consulta para cancelar (00:00): ")
+                    ind = -1
 
-                    for c in range(len(consulta_agendadas)):
-                        if consulta_agendadas[c][0] == CPF_paciente_logado and consulta_agendadas[c][2] == data_cancelar and consulta_agendadas[c][3] == horario_cancelar:
+                    for c in range(len(Agendamentos)):
+                        if Agendamentos[c][0] == CPF_paciente_logado and Agendamentos[c][2] == data_cancelar and Agendamentos[c][3] == horario_cancelar:
                             ind = c
                             break
 
                     if ind == -1:
                         print("Nenhuma consulta encontrada com estes dados.")
                     else:
-                        for c in range(len(consulta_agendadas)):
-                            if c != ind:
-                                consultas_canceladas.append(consulta_agendadas[c])
-
-                        consulta_agendadas = consultas_canceladas
-                        Agendamentos = consultas_canceladas
-                        print("Consulta cancelada com sucesso!")
+                        confirmar = input("Deseja realmente cancelar a consulta? (s/n): ")
+                        if confirmar.lower() == "s":
+                                Agendamentos.pop(ind)
+                                print("Consulta cancelada com sucesso!")
+                        else:
+                            print("Cancelamento não realizado.")
+                    
 
                 elif opcao_paciente == "0":
                     print("\nVocê irá sair daqui")
                     CPF_paciente_logado = ""
                     break
+
                 else:
                     print("Opção inválida amigo, escolha uma opção entre 0 e 4.")
-
- # ============ acesso administrador ============    
-    
+                     
     elif opcao == "2":
         print("\n ======= LOGIN ADIMINISTRADOR =======")
         login = input("\nDigite seu login: ")
@@ -374,7 +456,7 @@ while True:
                             sala_nome = input("Nome da sala: ")
                             indice_sala = -1
                             for i in range(len(Consultorios)):
-                                if Consultorios[i][0] == sala_nome:
+                                if Consultorios[i][0].lower() == sala_nome.lower():
                                     indice_sala = i
                                     break
                             if indice_sala == -1:
@@ -405,7 +487,7 @@ while True:
                             sala_nome = input("Nome da sala: ")
                             indice_sala = -1
                             for i in range(len(Consultorios)):
-                                if Consultorios[i][0] == sala_nome:
+                                if Consultorios[i][0].lower() == sala_nome.lower():
                                     indice_sala = i
                                     break
                             if indice_sala == -1:
