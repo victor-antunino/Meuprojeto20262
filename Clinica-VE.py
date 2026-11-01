@@ -1,15 +1,14 @@
 # PROJETO CLINICA DE ODONTOLOGIA - VE.
 adms = [["Victor", "12345", True]]
-Pacientes = [["Enzo", "15338918420", "12345", "83998279055", "", "", False]]
-Dentistas = [["D1", "Larissa", "123", "Ortodontia"],["D2", "Maria", "321", "Endodontia"],["D3", "Julia", "999", "Facetas"]]
+Dentistas = [["D1", "Larissa", "123", "Ortodontia"], ["D2", "Maria", "321", "Endodontia"], ["D3", "Julia", "999", "Facetas"]]
+Pacientes = []
 Consultorios = []
 Agendamentos = []
+consulta_agendadas = []
+consultas_canceladas = []
 adm_logado = False
 CPF_paciente_logado = ""
-ind1 = 0
-ind2 = -1
-
-# MENU PRINCIPAL
+ind = -1
 
 while True:
     print("\n========================================")
@@ -27,8 +26,7 @@ while True:
 
         cpf_valido = False
         while cpf_valido == False:
-            cpf = input("Informe seu CPF (ou digite 0 para voltar ao menu): ")
-
+            cpf = input("\nInforme seu CPF ou digite 0 para voltar ao menu: ")
             if cpf == "0":
                 break
 
@@ -39,7 +37,7 @@ while True:
                     break
 
             if len(cpf) != 11 or cpf_invalido == True:
-                print("CPF inválido! O CPF deve conter exatamente 11 dígitos numéricos. Tente novamente.")
+                print("CPF inválido, ele deve ter 11 dígitos, digite novamente.")
             else:
                 cpf_valido = True
 
@@ -59,7 +57,7 @@ while True:
                     print("Senha incorreta. Acesso negado.")
 
             else:
-                print("CPF nao cadastrado.")
+                print("\nCPF nao cadastrado.")
                 cadastro = input("Deseja fazer autocadastro? Digite S para Sim ou N para Não: ").lower()
 
                 if cadastro == "S" or "Sim":
@@ -72,14 +70,104 @@ while True:
                     else:
                         Pacientes.append([nome, cpf, senha, telefone, "", "", False])
                         CPF_paciente_logado = cpf
-                        print("Cadastro realizado com sucesso! Bem-vindo(a),", nome + "!")
+                        print("Cadastro realizado com sucesso, bem vindo(a),", nome)
+
+            while CPF_paciente_logado != "":
+                print("\n--- Menu do Paciente ---")
+                print("1 - Ver o corpo clínico")
+                print("2 - Agendar sua consulta")
+                print("3 - Visualizar minhas consultas")
+                print("4 - Cancelar consulta")
+                print("0 - Voltar para o menu principal")
+
+                opcao_paciente = input("\nEscolha uma opção: ")
+
+                if opcao_paciente == "1":
+                    print("\n--- CORPO CLÍNICO ---")
+                    if len(Dentistas) == 0:
+                        print("Nenhum dentista cadastrado no momento.")
+                    else:
+                        for d in range(len(Dentistas)):
+                            print("ID:", Dentistas[d][0], "| Nome:", Dentistas[d][1], "| CRO:", Dentistas[d][2], "| Especialidade:", Dentistas[d][3])
+
+                elif opcao_paciente == "2":
+                    print("\n--- Agendar Consulta ---")
+                    if len(Dentistas) == 0:
+                        print("Nao ha dentistas cadastrados.")
+                    else:
+                        print("Temos dentistas disponiveis")
+                        for d in range(len(Dentistas)):
+                            print("ID:", Dentistas[d][0], "| Nome:", Dentistas[d][1], "| Especialidade:",Dentistas[d][3])
+                        id_dentista = input("\nDigite o ID do dentista desejado: ")
+                        # criei essa variavel para ser aquela que vai saber se o tal do dentista existe ou não
+                        dentista_existe =False
+                        for d in range(len(Dentistas)):
+                            if Dentistas [d][0] == id_dentista:
+                                dentista_existe = True
+                                break
+
+                        if dentista_existe == False:
+                            print("Não foi possível localizar o dentista")
+                        else:
+                            data_consulta = input("Informe a data da consulta (Dia/Mês/Ano): ")
+                            horario_consulta = input("Informe o horário da consulta (00:00): ")
+                            if data_consulta == "" or horario_consulta == "":
+                                print("Data e horario nao podem ficar sem nada")
+                            else:
+                                horario_paia = False
+                                for c in range(len(consulta_agendadas)):
+                                    if consulta_agendadas[c][1] == id_dentista and consulta_agendadas[c][2] == data_consulta and consulta_agendadas[c][3] == horario_consulta:
+                                        horario_paia = True
+                                        break
+
+                                if horario_paia == True:
+                                    print("Infelizmente você terá que remarcar sua consulta, esse dentista está com uma consulta marcada para esse dia e horário")
+                                else:
+                                    consulta_agendadas.append([CPF_paciente_logado, id_dentista, data_consulta, horario_consulta])
+                                    print("Consulta agendada com sucesso")
+
+                elif opcao_paciente == "3":
+                    print("\n--- Minhas Consultas ---")
+                    tem_consulta = False
+                    for c in range(len(consulta_agendadas)):
+                        if consulta_agendadas[c][0] == CPF_paciente_logado:
+                            tem_consulta = True
+                            print("Dentista ID: ", consulta_agendadas[c][1], "| Data: ", consulta_agendadas[c][2], "| Horário: ", consulta_agendadas[c][3])
+                    if  tem_consulta == False:
+                        print("Você não tem consultas agendadas")
+
+                elif opcao_paciente == "4":
+                    print("\n--- Cancelar Consulta ---")
+                    data_cancelar = input("Digite a data da consulta para cancelar: ")
+                    horario_cancelar = input("Digite o horário da consulta para cancelar: ")
+
+                    for c in range(len(consulta_agendadas)):
+                        if consulta_agendadas[c][0] == CPF_paciente_logado and consulta_agendadas[c][2] == data_cancelar and consulta_agendadas[c][3] == horario_cancelar:
+                            ind = c
+                            break
+
+                    if ind == -1: #Cria uma variável de controle com o valor -1. Assume-se inicialmente que a consulta ainda não foi encontrada.
+                        print("\nNenhuma consulta foi encontrada.")
+                    else:
+                        for c in range(len(consulta_agendadas)):
+                            if c != ind:
+                                consultas_canceladas.append(consulta_agendadas[c])
+                        consulta_agendadas = consultas_canceladas
+                        print("\nConsulta cancelada com sucesso!")
+
+                elif opcao_paciente == "0":
+                    print("\nVocê irá sair daqui")
+                    CPF_paciente_logado = ""
+                    break
+                else:
+                    print("Opção inválida amigo, escolha uma opção entre 0 e 4.")
 
  # ============ acesso administrador ============    
     
     elif opcao == "2":
         print("\n ======= LOGIN ADIMINISTRADOR =======")
         login = input("\nDigite seu login: ")
-        senha = input("\nDigite sua senha: ")
+        senha = input("Digite sua senha: ")
         adm_logado = False
         for adm in adms:
             if adm[0] == login and adm[1] == senha:
@@ -96,9 +184,9 @@ while True:
                 print("3 - Gestão de pacientes")
                 print("4 - Gestão geral")
                 print("0 - Sair do menu administrativo")
-                opção_adm = input("\nEscolha uma opção: ")
+                opcao_adm = input("\nEscolha uma opção: ")
 
-                if opção_adm == "1":
+                if opcao_adm == "1":
                     while True:
                         print("\n===== GESTÃO DE DENTISTAS =====")
                         print("1 - Cadastrar dentista")
@@ -107,18 +195,18 @@ while True:
                         print("4 - Atualizar dentista")
                         print("5 - Excluir dentista")
                         print("0 - Voltar")
-                        opção_dentista = input("\nEscolha uma opção: ")
+                        opcao_dentista = input("\nEscolha uma opção: ")
 
-                        if opção_dentista == "1":
-                            código = input("ID do dentista: ")
+                        if opcao_dentista == "1":
+                            codigo = input("ID do dentista: ")
                             existe = False
                             for dentista in Dentistas:
-                                if dentista[0] == código:
+                                if dentista[0].lower() == codigo.lower():
                                     existe = True
                                     break
                             if codigo == "":
                                 print("O ID não pode ficar vazio.")
-                            if existe == True:
+                            elif existe == True:
                                 print("Já existe um dentista com esse ID.")
                             else:
                                 nome = input("Nome do dentista: ")
@@ -129,54 +217,54 @@ while True:
                                     if dentista[2] == cro:
                                         cro_existe = True
                                         break
-                                if código == "" or nome == "" or cro == "" or Especialidade == "":
+                                if codigo == "" or nome == "" or cro == "" or Especialidade == "":
                                     print("Todos os campos devem ser preenchidos.")
                                 elif cro_existe == True:
                                     print("Já existe um dentista com esse CRO.")
                                 else:
-                                    Dentistas.append([código, nome, cro, Especialidade ])
-                                    print("\nDentistas cadastrados com sucesso!")
+                                    Dentistas.append([codigo, nome, cro, Especialidade ])
+                                    print("\nDentista cadastrado com sucesso!")
 
-                        elif opção_dentista == "2":
+                        elif opcao_dentista == "2":
                             if len(Dentistas) == 0:
                                 print("Nunhum dentista cadastrado.")
                             else:
                                 for dentista in Dentistas:
                                     print("\n ID:", dentista[0], "\n Nome:", dentista[1], "\n CRO:", dentista[2], "\n Especialidade:", dentista[3])
 
-                        elif opção_dentista == "3":
+                        elif opcao_dentista == "3":
                             codigo = input("Buscar pelo ID:")
                             indice = -1
                             for i in range(len(Dentistas)):
-                                if Dentistas[i][0] == codigo:
+                                if Dentistas[i][0].lower() == codigo.lower():
                                     indice = i
                                     break
                             if indice == -1:
                                     print("Dentista não encontrado.")
                             else:
-                                print("ID: ", Dentistas[indice][0])
+                                print("\nID: ", Dentistas[indice][0])
                                 print("Nome: ", Dentistas[indice][1])
                                 print("CRO: ", Dentistas[indice][2])
                                 print("Especialidade: ", Dentistas[indice][3])
                         
-                        elif opção_dentista == "4":
+                        elif opcao_dentista == "4":
                             codigo = input("ID do dentista para atualizar:" )
                             indice = -1
                             for i in range(len(Dentistas)):
-                                if Dentistas [i][0] == codigo:
+                                if Dentistas [i][0].lower() == codigo.lower():
                                     indice = i
                                     break
                             if indice == -1:
                                 print("Dentista não encontrado.")
                             else:
-                                print("1 - Alterar nome:")
-                                print("\n2 - Alterar CRO:")
-                                print("\n3 - Alterar especialidade:")
-                                campo = input("escolha uma opção:")
+                                print("1 - Alterar nome")
+                                print("\n2 - Alterar CRO")
+                                print("\n3 - Alterar especialidade")
+                                campo = input("escolha uma opção")
 
                                 if campo == "1":
                                     novo = input("Novo nome: ")
-                                    if novo != "":
+                                    if novo == "":
                                         print("Nome não pode ficar vazio.")
                                     else:
                                         Dentistas[indice][1] = novo
@@ -187,16 +275,16 @@ while True:
                                     existe = False
                                     for i in range(len(Dentistas)):
                                         if i != indice and Dentistas[i][2] == novo:
-                                             existe == True
+                                             existe = True
                                              break
                                     if novo == "" or existe == True:
                                         print("CRO vazio ou já cadastrado.")
                                     else:
-                                        Dentistas[indice][2] == novo
+                                        Dentistas[indice][2] = novo
                                         print("CRO atualizado.")
                                 elif campo == "3":
                                     novo = input("Nova especialidade:")
-                                    if novo != "":
+                                    if novo == "":
                                         print("Especialidade não pode ficar vazia.")
                                     else:
                                         Dentistas[indice][3] = novo
@@ -204,19 +292,19 @@ while True:
                                 else:
                                     print("Opção invalida.")
 
-                        elif opção_dentista == "5":
+                        elif opcao_dentista == "5":
                             codigo = input("ID do dentista para remover:")
                             indice = -1
                             for i in range(len(Dentistas)):
-                                if Dentistas[i][0] == codigo:
-                                    indice = 1
+                                if Dentistas[i][0].lower() == codigo.lower():
+                                    indice = i
                                     break
                             if indice == -1:
                                 print("Dentista não encontrado.")
                             else:
                                 tem_consulta = False
                                 for consulta in Agendamentos:
-                                    if consulta[1] == codigo:
+                                    if consulta[1].lower() == codigo.lower():
                                         tem_consulta = True
                                         break
                                 if tem_consulta == True:
@@ -227,19 +315,19 @@ while True:
                                         Dentistas.pop(indice)
                                         for sala in Consultorios:
                                             for j in range(len(sala[1])):
-                                                if sala[1][j] == codigo:
+                                                if sala[1][j].lower() == codigo.lower():
                                                     sala[1].pop(j)
                                                     break
                                         print("Dentista removido.")
                                     else:
                                         print("Remoção Cancelada.")
 
-                        elif opção_dentista == "0":
+                        elif opcao_dentista == "0":
                             break
                         else:
                             print("Opção Invalida.")
 
-                if opção_adm == "2":
+                elif opcao_adm == "2":
                        while True:
                         print("\n===== GESTÃO DE CONSULTORIOS =====")
                         print("1 - Cadastrar sala")
@@ -247,13 +335,13 @@ while True:
                         print("3 - Vincular dentista a uma sala")
                         print("4 - Desvincular dentista de uma sala")
                         print("0 - Voltar")
-                        opção_sala = input("escolha uma opção:")
+                        opcao_sala = input("escolha uma opção:")
 
-                        if opção_sala == "1":
+                        if opcao_sala == "1":
                             sala_nome = input("Nome da sala: ")
                             existe = False
                             for sala in Consultorios:
-                                if sala[0] == sala_nome:
+                                if sala[0].lower() == sala_nome.lower():
                                     existe = True
                                     break
                             if sala_nome == "" or existe == True:
@@ -262,7 +350,7 @@ while True:
                                 Consultorios.append([sala_nome, []])
                                 print("Sala cadastrada.")
 
-                        elif opção_sala == "2":
+                        elif opcao_sala == "2":
                             if len(Consultorios) == 0:
                                 print("Nenhuma sala cadastrada.")
                             else:
@@ -279,7 +367,7 @@ while True:
                                                     break
                                             print("ID:", codigo, "\nNome:", nome_dentista)
 
-                        elif opção_sala == "3":
+                        elif opcao_sala == "3":
                             sala_nome = input("Nome da sala: ")
                             indice_sala = -1
                             for i in range(len(Consultorios)):
@@ -292,15 +380,16 @@ while True:
                                 codigo = input("ID do dentista: ")
                                 dentista_existe = False
                                 for dentista in Dentistas:
-                                    if dentista[0] == codigo:
+                                    if dentista[0].lower() == codigo.lower():
                                         dentista_existe = True
+                                        codigo = dentista[0]
                                         break
                                 if dentista_existe == False:
                                     print("Dentista não encontrado.")
                                 else:
                                     ja_vinculado = False
                                     for item in Consultorios[indice_sala][1]:
-                                        if item == codigo:
+                                        if item.lower() == codigo.lower():
                                             ja_vinculado = True
                                             break
                                     if ja_vinculado == True:
@@ -309,7 +398,7 @@ while True:
                                         Consultorios[indice_sala][1].append(codigo)
                                         print("Dentista vinculado a sala!")
                                         
-                        elif opção_sala == "4":
+                        elif opcao_sala == "4":
                             sala_nome = input("Nome da sala: ")
                             indice_sala = -1
                             for i in range(len(Consultorios)):
@@ -322,7 +411,7 @@ while True:
                                 codigo = input("ID do dentista para desvincular:")
                                 indice_vinculo = -1
                                 for i in range(len(Consultorios[indice_sala][1])):
-                                    if Consultorios[indice_sala][1][i] == codigo:
+                                    if Consultorios[indice_sala][1][i].lower() == codigo.lower():
                                         indice_vinculo = i
                                         break
                                 if indice_vinculo == -1:
@@ -331,12 +420,12 @@ while True:
                                     Consultorios[indice_sala][1].pop(indice_vinculo)
                                     print("Vinculo removido.")
 
-                        elif opção_sala == "0":
+                        elif opcao_sala == "0":
                             break
                         else:
                             print("Opção invalida")
 
-                elif opção_adm == "3":
+                elif opcao_adm == "3":
                     while True:
                         print("\n===== GESTÃO DE PACIENTES =====")
                         print("1 - Cadastrar paciente")
@@ -346,9 +435,9 @@ while True:
                         print("5 - Registrar observações / alergias")
                         print("6 - Remover pacientes")
                         print("0 - Voltar")
-                        opção_cadastro = input("Escolha uma opção: ")
+                        opcao_cadastro = input("Escolha uma opção: ")
 
-                        if opção_cadastro == "1":
+                        if opcao_cadastro == "1":
                             nome = input("Nome:")
                             cpf = input("CPF (11 digitos): ")
                             senha = input("Senha: ")
@@ -373,30 +462,32 @@ while True:
                                 Pacientes.append([nome, cpf, senha, telefone, "", "", False])
                                 print("Paciente cadastrado!")
 
-                        elif opção_cadastro == "2":
+                        elif opcao_cadastro == "2":
                             if len(Pacientes) == 0:
                                 print("Nenhum paciente cadastrado.")
                             else:
-                                for pacientes in Pacientes:
-                                    print("\nNome: ", pacientes[0],"| CPF: ", pacientes[1])
-                                    print("Telefone: ", pacientes[3])
-                                    print("Observações: ", pacientes[4])
-                                    print("Alergias: ", pacientes[5])
+                                for paciente in Pacientes:
+                                    print("\nNome: ", paciente[0])
+                                    print("CPF: ", paciente[1])
+                                    print("Telefone: ", paciente[3])
+                                    print("Observações: ", paciente[4])
+                                    print("Alergias: ", paciente[5])
 
-                        elif opção_cadastro == "3":
+                        elif opcao_cadastro == "3":
                             busca = input("Informe nome ou CPF: ")
                             encontrou = False
-                            for pacientes in Pacientes:
-                                if pacientes[0] == busca or pacientes[1] == busca:
+                            for paciente in Pacientes:
+                                if paciente[0] == busca or paciente[1] == busca:
                                     encontrou = True
-                                    print("\nNome: ", paciente[0], "| CPF: ", paciente[1])
+                                    print("\nNome: ", paciente[0]) 
+                                    print("CPF: ", paciente[1])
                                     print("Telefone:", paciente[3])
                                     print("Observações: ", paciente[4])
                                     print("Alergias: ", paciente[5])
                             if encontrou == False:
                                 print("Paciente não encontrado.")
 
-                        elif opção_cadastro == "4":
+                        elif opcao_cadastro == "4":
                             cpf = input("CPF do paciente para atualizar: ")
                             indice = -1
                             for i in range(len(Pacientes)):
@@ -435,9 +526,9 @@ while True:
                                     else:
                                         for consulta in Agendamentos:
                                             if consulta[0] == cpf:
-                                                consulta[1] == novo
+                                                consulta[0] = novo
                                         Pacientes[indice][1] = novo
-                                        print("CPF atualizado (Inclusive nas consultas).")
+                                        print("CPF atualizado (atualizado nas consultas tambem).")
 
                                 elif campo == "3":
                                     novo = input("Nova senha: ")
@@ -457,7 +548,7 @@ while True:
                                 else:
                                     print("Opção Invalida.")
 
-                        elif opção_cadastro == "5":
+                        elif opcao_cadastro == "5":
                             cpf = input("CPF do paciente: ")
                             indice = -1
                             for i in range(len(Pacientes)):
@@ -481,7 +572,7 @@ while True:
                                 else:
                                     print("Opção invalida.")
 
-                        elif opção_cadastro == "6":
+                        elif opcao_cadastro == "6":
                             cpf = input("CPF do paciente para remover: ")
                             indice = -1
                             for i in range(len(Pacientes)):
@@ -506,12 +597,12 @@ while True:
                                     else:
                                         print("Remoção cancelada.")
 
-                        elif opção_cadastro == "0":
+                        elif opcao_cadastro == "0":
                             break
                         else:
                             print("Opção invalida.")
 
-                elif opção_adm == "2":
+                elif opcao_adm == "4":
                     while True:
                         print("\n===== AGENDA GERAL =====")
                         print("1 - Vizualizar todas as consultas")
@@ -519,9 +610,9 @@ while True:
                         print("3 - Filtrar por data")
                         print("4 - Cancelar consulta de qualquer paciente")
                         print("0 - Voltar")
-                        opção_agenda = input("Escolha uma opção: ")
+                        opcao_agenda = input("Escolha uma opção: ")
 
-                        if opção_agenda == "1":
+                        if opcao_agenda == "1":
                             if len(Agendamentos) == 0:
                                 print("Não a consultas na agenda. ")
                             else:
@@ -531,7 +622,7 @@ while True:
                                     nome_dentista = "Não encontrado"
                                     for paciente in Pacientes:
                                         if paciente[1] == consulta[0]:
-                                            nome_dentista = dentista[0]
+                                            nome_paciente = paciente[0]
                                             break
                                     for dentista in Dentistas:
                                         if dentista[0] == consulta[1]:
@@ -542,5 +633,60 @@ while True:
                                     print("Dentista:", nome_dentista, "| ID:", consulta[1])
                                     print("Data:", consulta[2], "| Horário:", consulta[3])
 
-                        elif opção_agenda == "2":
+                        elif opcao_agenda == "2":
                             codigo = input("ID do dentista: ")
+                            encontrou = False
+                            for consulta in Agendamentos:
+                                if consulta[1].lower() == codigo.lower():
+                                    encontrou = True
+                                    print("CPF: ", consulta[0], "| Data:", consulta[2], "| Horario: ", consulta[3])
+                            if encontrou == False:
+                                print("Não existem consultas desse dentista.")
+
+                        elif opcao_agenda == "3":
+                            data = input("Data para filtrar (DD/MM/AAAA): ")
+                            encontrou = False
+                            for consulta in Agendamentos:
+                                if consulta[2] == data:
+                                    encontrou = True
+                                    print("CPF :", consulta[0], "| Dentista ID :", consulta[1], "| Horarios :", consulta[3])
+                            if encontrou == False:
+                                print("Não existem consultas nessa data.")
+
+                        elif opcao_agenda == "4":
+                            if len(Agendamentos) == 0:
+                                print("Não tem consultas para cancelar.")
+                            else:
+                                for i in range(len(Agendamentos)):
+                                    consulta = Agendamentos[i]
+                                    print("Número: ", i + 1, "| CPF :", consulta[0], "| Dentista ID: ", consulta[1], "| Horario: ", consulta[3])
+                                numero = input("Número da consulta para cancelar: ")
+                                indice = -1
+                                for i in range(len(Agendamentos)):
+                                    if numero == str(i + 1):
+                                        indice = i
+                                        break
+                                if indice == -1:
+                                    print("Número invalido.")
+                                else:
+                                    confirmar = input("Confirmar cancelamento? (s/n): ")
+                                    if confirmar == "s" or confirmar == "S":
+                                        Agendamentos.pop(indice)
+                                        print("Consulta cancelada pela secretaria.")
+                                    else:
+                                        print("Cancelamento desistido.")
+                        elif opcao_agenda == "0":
+                            break
+                        else:
+                            print("Opção invalida.")
+                elif opcao_adm == "0":
+                    adm_logado = False
+                    print("Saindo da administração...")
+                else:
+                    print("Opção invalida.")
+                    
+    elif opcao == "0":
+        print("Sistema de atendimento encerrado. Volte sempre!")
+        break
+    else:
+        print("Opção invalida. Escolha 0, 1 ou 2.")
