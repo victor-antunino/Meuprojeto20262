@@ -113,7 +113,7 @@ while True:
                             data_valida = False
 
                             while data_valida == False:
-                                data_consulta = input("Digite a data (DD/MM/AAAA): ")
+                                data_consulta = input("Digite a data Dia/Mês/Ano: ")
 
                                 formato_valido = True
 
@@ -131,7 +131,7 @@ while True:
                                                 break
 
                                 if formato_valido == False:
-                                    print("Formato inválido. Use DD/MM/AAAA.")
+                                    print("Use apenas Dia/Mês/Ano.")
                                 else:
                                     dia = int(data_consulta[0:2])
                                     mes = int(data_consulta[3:5])
@@ -152,7 +152,7 @@ while True:
                                         print("Data inválida.")
 
                                     elif dia < 1 or dia > dias_no_mes:
-                                        print("Esse dia não existe no mês informado.")
+                                        print("Esse dia não existe no mês informado")
                                     else:
                                         data_valida = True
 
@@ -160,7 +160,7 @@ while True:
                             horario_valido = False
 
                             while horario_valido == False:
-                                horario_consulta = input("Digite o horário (HH:MM): ")
+                                horario_consulta = input("Digite o horário 00:00: ")
 
                                 formato_valido = True
 
@@ -177,13 +177,13 @@ while True:
                                                 break
 
                                 if formato_valido == False:
-                                    print("Formato inválido. Use HH:MM.")
+                                    print("Use apenas 00:00")
                                 else:
                                     hora = int(horario_consulta[0:2])
                                     minuto = int(horario_consulta[3:5])
 
                                     if hora < 0 or hora > 23 or minuto < 0 or minuto > 59:
-                                        print("Esse horário não existe.")
+                                        print("Esse horário não existe")
                                     else:
                                         horario_valido = True
 
@@ -200,12 +200,12 @@ while True:
                                         break
 
                             if conflito == True:
-                                print("Horário indisponível.")
-                                print("O dentista ou o paciente já possui uma consulta nesse horário.")
+                                print("Horário indisponível")
+                                print("O dentista ou o paciente já possui uma consulta nesse horário")
                             else:
                                 novo_agendamento = [CPF_paciente_logado, id_dentista, data_consulta, horario_consulta]
                                 Agendamentos.append(novo_agendamento)
-                                print("Consulta agendada com sucesso!")
+                                print("Consulta agendada com sucesso")
 
                 elif opcao_paciente == "3":
                     print("\n--- Minhas Consultas ---")
@@ -221,8 +221,8 @@ while True:
 
                 elif opcao_paciente == "4":
                     print("\n--- Cancelar Consulta ---")
-                    data_cancelar = input("Digite a data da consulta para cancelar (Dia/Mês/Ano): ")
-                    horario_cancelar = input("Digite o horário da consulta para cancelar (00:00): ")
+                    data_cancelar = input("Digite a data da consulta para cancelar Dia/Mês/Ano: ")
+                    horario_cancelar = input("Digite o horário da consulta para cancelar 00:00: ")
                     ind = -1
 
                     for c in range(len(Agendamentos)):
@@ -231,14 +231,14 @@ while True:
                             break
 
                     if ind == -1:
-                        print("Nenhuma consulta encontrada com estes dados.")
+                        print("Nenhuma consulta encontrada com estes dados")
                     else:
-                        confirmar = input("Deseja realmente cancelar a consulta? (s/n): ")
-                        if confirmar.lower() == "s":
+                        confirmar = input("Deseja realmente cancelar a consulta? S para sim e N para não: ")
+                        if confirmar.lower() == "S" or confirmar.lower() == "Sim":
                                 Agendamentos.pop(ind)
-                                print("Consulta cancelada com sucesso!")
+                                print("Consulta cancelada com sucesso")
                         else:
-                            print("Cancelamento não realizado.")
+                            print("Cancelamento não realizado")
                     
 
                 elif opcao_paciente == "0":
@@ -247,7 +247,7 @@ while True:
                     break
 
                 else:
-                    print("Opção inválida amigo, escolha uma opção entre 0 e 4.")
+                    print("Opção inválida amigo, escolha uma opção entre 0 e 4")
                      
     elif opcao == "2":
         print("\n ======= LOGIN ADIMINISTRADOR =======")
@@ -259,7 +259,7 @@ while True:
                 adm_logado = True
                 break
         if adm_logado == False:
-            print("\nLogin ou senha incorretos. Tente novamente.")
+            print("\nLogin ou senha incorretos, tente novamente")
         else:
             print("\nBem-vindo ao menu do administrador!")
             while adm_logado == True:
@@ -290,9 +290,9 @@ while True:
                                     existe = True
                                     break
                             if codigo == "":
-                                print("O ID não pode ficar vazio.")
+                                print("O ID não pode ficar vazio")
                             elif existe == True:
-                                print("Já existe um dentista com esse ID.")
+                                print("Já existe um dentista com esse ID")
                             else:
                                 nome = input("Nome do dentista: ")
                                 cro = input("CRO do dentista: ")
@@ -303,16 +303,16 @@ while True:
                                         cro_existe = True
                                         break
                                 if codigo == "" or nome == "" or cro == "" or Especialidade == "":
-                                    print("Todos os campos devem ser preenchidos.")
+                                    print("Todos os campos devem ser preenchidos")
                                 elif cro_existe == True:
-                                    print("Já existe um dentista com esse CRO.")
+                                    print("Já existe um dentista com esse CRO")
                                 else:
                                     Dentistas.append([codigo, nome, cro, Especialidade ])
-                                    print("\nDentista cadastrado com sucesso!")
+                                    print("\nDentista cadastrado com sucesso")
 
                         elif opcao_dentista == "2":
                             if len(Dentistas) == 0:
-                                print("Nunhum dentista cadastrado.")
+                                print("Nunhum dentista cadastrado")
                             else:
                                 for dentista in Dentistas:
                                     print("\n ID:", dentista[0], "\n Nome:", dentista[1], "\n CRO:", dentista[2], "\n Especialidade:", dentista[3])
@@ -325,7 +325,7 @@ while True:
                                     indice = i
                                     break
                             if indice == -1:
-                                    print("Dentista não encontrado.")
+                                    print("Dentista não encontrado")
                             else:
                                 print("\nID: ", Dentistas[indice][0])
                                 print("Nome: ", Dentistas[indice][1])
@@ -340,7 +340,7 @@ while True:
                                     indice = i
                                     break
                             if indice == -1:
-                                print("Dentista não encontrado.")
+                                print("Dentista não encontrado")
                             else:
                                 print("1 - Alterar nome")
                                 print("2 - Alterar CRO")
@@ -350,7 +350,7 @@ while True:
                                 if campo == "1":
                                     novo = input("Novo nome: ")
                                     if novo == "":
-                                        print("Nome não pode ficar vazio.")
+                                        print("Nome não pode ficar vazio")
                                     else:
                                         Dentistas[indice][1] = novo
                                         print("Nome Atualizado!")
@@ -363,17 +363,17 @@ while True:
                                              existe = True
                                              break
                                     if novo == "" or existe == True:
-                                        print("CRO vazio ou já cadastrado.")
+                                        print("CRO vazio ou já cadastrado")
                                     else:
                                         Dentistas[indice][2] = novo
                                         print("CRO atualizado.")
                                 elif campo == "3":
                                     novo = input("Nova especialidade:")
                                     if novo == "":
-                                        print("Especialidade não pode ficar vazia.")
+                                        print("Especialidade não pode ficar vazia")
                                     else:
                                         Dentistas[indice][3] = novo
-                                        print("Especialidade atualizada!")
+                                        print("Especialidade atualizada")
                                 else:
                                     print("Opção invalida.")
 
@@ -385,7 +385,7 @@ while True:
                                     indice = i
                                     break
                             if indice == -1:
-                                print("Dentista não encontrado.")
+                                print("Dentista não encontrado")
                             else:
                                 tem_consulta = False
                                 for consulta in Agendamentos:
@@ -393,7 +393,7 @@ while True:
                                         tem_consulta = True
                                         break
                                 if tem_consulta == True:
-                                    print("Não pode remover: o dentista possui consultas.")
+                                    print("Não pode remover: o dentista possui consultas")
                                 else:
                                     confirmar = input("Confirmar remoção? (s/n):")
                                     if confirmar == "s" or confirmar == "S":
@@ -460,7 +460,7 @@ while True:
                                     indice_sala = i
                                     break
                             if indice_sala == -1:
-                                    print("Sala não encontrada.")
+                                    print("Sala não encontrada")
                             else:
                                 codigo = input("ID do dentista: ")
                                 dentista_existe = False
@@ -470,7 +470,7 @@ while True:
                                         codigo = dentista[0]
                                         break
                                 if dentista_existe == False:
-                                    print("Dentista não encontrado.")
+                                    print("Dentista não encontrado")
                                 else:
                                     ja_vinculado = False
                                     for item in Consultorios[indice_sala][1]:
@@ -478,7 +478,7 @@ while True:
                                             ja_vinculado = True
                                             break
                                     if ja_vinculado == True:
-                                        print("Esse dentista ja esta vinculado a esta sala.")
+                                        print("Esse dentista ja esta vinculado a esta sala")
                                     else:
                                         Consultorios[indice_sala][1].append(codigo)
                                         print("Dentista vinculado a sala!")
@@ -491,7 +491,7 @@ while True:
                                     indice_sala = i
                                     break
                             if indice_sala == -1:
-                                print("Sala não encontrada.")
+                                print("Sala não encontrada")
                             else:
                                 codigo = input("ID do dentista para desvincular:")
                                 indice_vinculo = -1
@@ -500,7 +500,7 @@ while True:
                                         indice_vinculo = i
                                         break
                                 if indice_vinculo == -1:
-                                    print("O dentista não esta vinculado a esta sala.")
+                                    print("O dentista não esta vinculado a esta sala")
                                 else:
                                     Consultorios[indice_sala][1].pop(indice_vinculo)
                                     print("Vinculo removido.")
@@ -538,18 +538,18 @@ while True:
                                     existe = True
                                     break
                             if nome == "" or senha == "" or telefone == "":
-                                print(" Todos os campos devem ser preeenchidos.")
+                                print(" Todos os campos devem ser preeenchidos")
                             elif len(cpf) != 11 or cpf_invalido == True:
-                                print(" CPF precisa ter exatamente 11 digitos numericos.")
+                                print(" CPF precisa ter exatamente 11 digitos numericos")
                             elif existe == True:
                                 print("Esse CPF já esta cadastrado.")
                             else:
                                 Pacientes.append([nome, cpf, senha, telefone, "", "", False])
-                                print("Paciente cadastrado!")
+                                print("Paciente cadastrado")
 
                         elif opcao_cadastro == "2":
                             if len(Pacientes) == 0:
-                                print("Nenhum paciente cadastrado.")
+                                print("Nenhum paciente cadastrado")
                             else:
                                 for paciente in Pacientes:
                                     print("\nNome: ", paciente[0])
@@ -580,7 +580,7 @@ while True:
                                     indice = i
                                     break
                             if indice == -1:
-                                print("Paciente não encontrado.")
+                                print("Paciente não encontrado")
                             else:
                                 print("\n1 - Alterar nome")
                                 print("2 - Alterar CPF")
@@ -590,10 +590,10 @@ while True:
                                 if campo == "1":
                                     novo = input("Novo nome: ")
                                     if novo == "":
-                                        print("Nome vazio não é permitido.")
+                                        print("Nome vazio não é permitido")
                                     else:
                                         Pacientes[indice][0] = novo
-                                        print(" Nome atualizado!")
+                                        print(" Nome atualizado")
                                 elif campo == "2":
                                     novo = input("Novo CPF: ")
                                     cpf_invalido = False
@@ -607,31 +607,31 @@ while True:
                                             existe = True
                                             break
                                     if len(novo) != 11 or cpf_invalido == True or existe == True:
-                                        print("CPF inavalido ou já cadastrado.")
+                                        print("CPF inavalido ou já cadastrado")
                                     else:
                                         for consulta in Agendamentos:
                                             if consulta[0] == cpf:
                                                 consulta[0] = novo
                                         Pacientes[indice][1] = novo
-                                        print("CPF atualizado (atualizado nas consultas tambem).")
+                                        print("CPF atualizado (atualizado nas consultas tambem)")
 
                                 elif campo == "3":
                                     novo = input("Nova senha: ")
                                     if novo == "":
-                                        print("Senha não pode ficar vazia.")
+                                        print("Senha não pode ficar vazia")
                                     else:
                                         Pacientes[indice][2] = novo
-                                        print("Senha Atualizada!")
+                                        print("Senha Atualizada")
 
                                 elif campo == "4":
                                     novo = input("Novo Telefone: ")
                                     if novo == "":
-                                        print("Telefone não pode ficar vazio.")
+                                        print("Telefone não pode ficar vazio")
                                     else:
                                         Pacientes[indice][3] = novo
-                                        print("Telefone Atualizado!")
+                                        print("Telefone Atualizado")
                                 else:
-                                    print("Opção Invalida.")
+                                    print("Opção Invalida")
 
                         elif opcao_cadastro == "5":
                             cpf = input("CPF do paciente: ")
@@ -641,7 +641,7 @@ while True:
                                     indice = i
                                     break
                             if indice == -1:
-                                print("Paciente não encontrado.")
+                                print("Paciente não encontrado")
                             else:
                                 print("\n1- Observações")
                                 print("2- Alergias")
@@ -649,11 +649,11 @@ while True:
                                 if campo == "1":
                                     novo = input("Nova Observação: ")
                                     Pacientes[indice][4] = novo
-                                    print("Observação Atualizada!")
+                                    print("Observação Atualizada")
                                 elif campo == "2":
                                     novo = input("Nova alergia: ")
                                     Pacientes[indice][5] = novo
-                                    print("Alergia Atualizada!")
+                                    print("Alergia Atualizada")
                                 else:
                                     print("Opção invalida.")
 
@@ -726,21 +726,21 @@ while True:
                                     encontrou = True
                                     print("CPF: ", consulta[0], "| Data:", consulta[2], "| Horario: ", consulta[3])
                             if encontrou == False:
-                                print("Não existem consultas desse dentista.")
+                                print("Não existem consultas desse dentista")
 
                         elif opcao_agenda == "3":
-                            data = input("Data para filtrar (DD/MM/AAAA): ")
+                            data = input("Data para filtrar Dia/Mês/Ano: ")
                             encontrou = False
                             for consulta in Agendamentos:
                                 if consulta[2] == data:
                                     encontrou = True
                                     print("CPF :", consulta[0], "| Dentista ID :", consulta[1], "| Horarios :", consulta[3])
                             if encontrou == False:
-                                print("Não existem consultas nessa data.")
+                                print("Não existem consultas nessa data")
 
                         elif opcao_agenda == "4":
                             if len(Agendamentos) == 0:
-                                print("Não tem consultas para cancelar.")
+                                print("Não tem consultas para cancelar")
                             else:
                                 for i in range(len(Agendamentos)):
                                     consulta = Agendamentos[i]
@@ -771,7 +771,7 @@ while True:
                     print("Opção invalida.")
                     
     elif opcao == "0":
-        print("Sistema de atendimento encerrado. Volte sempre!")
+        print("Sistema de atendimento encerrado. Volte sempre")
         break
     else:
         print("Opção invalida. Escolha 0, 1 ou 2.")
