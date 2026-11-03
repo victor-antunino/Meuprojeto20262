@@ -9,19 +9,13 @@ CPF_paciente_logado = ""
 ind = -1
 
 while True:
-    print("\n========================================")
-    print("      CLÍNICA ODONTOLÓGICA — MENU      ")
-    print("========================================")
-    print("\n1 - Acessar como paciente")
-    print("2 - Acessar como administrador")
-    print("0 - Sair do sistema")
-
+    print("\n===== CLÍNICA ODONTOLÓGICA — MENU =====")
+    print("\n1 - Acessar como paciente", "\n2 - Acessar como administrador", "\n0 - Sair do sistema")
     opcao = input("\nDigite qual opção deseja: ")
 
     if opcao == "1":
         CPF_paciente_logado = ""
         print("\n===== ACESSO DO PACIENTE =====")
-
         cpf_valido = False
         while cpf_valido == False:
             cpf = input("\nInforme seu CPF ou digite 0 para voltar ao menu: ")
@@ -53,7 +47,6 @@ while True:
                     print("Bem-vindo(a),", Pacientes[indice_paciente][0] + "!")
                 else:
                     print("Senha incorreta. Acesso negado.")
-
             else:
                 print("\nCPF nao cadastrado.")
                 cadastro = input("Deseja fazer autocadastro? Digite S para Sim ou N para Não: ").lower()
@@ -71,13 +64,7 @@ while True:
                         print("Cadastro realizado com sucesso, bem vindo(a),", nome)
 
             while CPF_paciente_logado != "":
-                print("\n--- Menu do Paciente ---")
-                print("1 - Ver o corpo clínico")
-                print("2 - Agendar sua consulta")
-                print("3 - Visualizar minhas consultas")
-                print("4 - Cancelar consulta")
-                print("0 - Voltar para o menu principal")
-
+                print("\n--- Menu do Paciente ---", "\n1 - Ver o corpo clínico", "\n2 - Agendar sua consulta", "\n3 - Visualizar minhas consultas", "\n4 - Cancelar consulta", "\n0 - Voltar para o menu principal")
                 opcao_paciente = input("\nEscolha uma opção: ")
 
                 if opcao_paciente == "1":
@@ -96,11 +83,9 @@ while True:
                         print("\nDentistas disponíveis:")
                         for d in Dentistas:
                             print("ID:", d[0], "| Nome:", d[1], "| Especialidade:", d[3])
-
                         id_dentista = input("\nDigite o ID do dentista: ")
                         dentista_existe = False
                         nome_dentista = ""
-
                         for d in Dentistas:
                             if d[0].lower() == id_dentista.lower():
                                 dentista_existe = True
@@ -120,7 +105,6 @@ while True:
                                     formato_valido = False
                                 elif dia[2] != "/" or dia[5] != "/":
                                     formato_valido = False
-
                                 else:
                                     for i in range(len(dia)):
                                         if i != 2 and i != 5:
@@ -176,18 +160,15 @@ while True:
                                     hora_livres.append(horario)
 
                             print("\n--- HORÁRIOS DISPONÍVEIS ---")
-                            print("Dentista:", nome_dentista)
-                            print("Data:", dia)
+                            print("Dentista:", nome_dentista, "\nData:", dia)
 
                             if len(hora_livres) == 0:
                                 print("Não existem horários disponíveis.")
-
                             else:
                                 for horario in hora_livres:
                                     print(horario)
 
                                 horario_escolhido = input("\nEscolha um dos horários disponíveis: ")
-
                                 horario_valido = False
 
                                 for horario in hora_livres:
@@ -201,10 +182,7 @@ while True:
                                     novo_agendamento = [CPF_paciente_logado, id_dentista, dia, horario_escolhido]
                                     Agendamentos.append(novo_agendamento)
                                     print("\n--- CONSULTA AGENDADA COM SUCESSO ---")
-                                    print("Dentista:", nome_dentista)
-                                    print("ID:", id_dentista)
-                                    print("Data:", dia)
-                                    print("Horário:", horario_escolhido)
+                                    print("Dentista:", nome_dentista, "\nID:", id_dentista, "\nData:", dia, "\nHorário:", horario_escolhido)
 
                 elif opcao_paciente == "3":
                     print("\n--- MINHAS CONSULTAS ---")
@@ -217,11 +195,7 @@ while True:
                                 if d[0].lower() == consulta[1].lower():
                                     nome_dentista = d[1]
                                     break
-
-                            print("\nNome do dentista:", nome_dentista)
-                            print("Dentista ID:", consulta[1])
-                            print("Data:", consulta[2])
-                            print("Horário:", consulta[3])
+                            print("\nNome do dentista:", nome_dentista, "\nDentista ID:", consulta[1], "\nData:", consulta[2], "\nHorário:", consulta[3])
 
                     if tem_consulta == False:
                         print("Você não tem consultas agendadas.")
@@ -237,11 +211,7 @@ while True:
                                 if d[0].lower() == consulta[1].lower():
                                     nome_dentista = d[1]
                                     break
-
-                            print("\nNome do dentista:", nome_dentista)
-                            print("Dentista ID:", consulta[1])
-                            print("Data:", consulta[2])
-                            print("Horário:", consulta[3])
+                            print("\nNome do dentista:", nome_dentista, "\nDentista ID:", consulta[1], "\nData:", consulta[2], "\nHorário:", consulta[3])
 
                     if tem_consulta == False:
                         print("Você não tem consultas agendadas para cancelar")
@@ -268,7 +238,6 @@ while True:
                     print("\nVocê irá sair daqui")
                     CPF_paciente_logado = ""
                     break
-
                 else:
                     print("Opção inválida amigo, escolha uma opção entre 0 e 4")
                      
