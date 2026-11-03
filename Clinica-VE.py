@@ -1,6 +1,6 @@
 adms = [["Victor", "12345", True]]
 Dentistas = [["D1", "Pedro", "123", "Ortodontia"], ["D2", "Léticia", "321", "Endodontia"], ["D3", "José", "999", "Facetas"]]
-Pacientes = []
+Pacientes = [["Enzo", "1533898420", "123", "83998279055", "", "", False], ["Paulo", "12345678910", "321", "83981212275", "", "", False]]
 Consultorios = []
 Agendamentos = []
 hora_pronto = ['08:00', '09:00', '10:00', '11:00']
