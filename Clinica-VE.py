@@ -247,9 +247,7 @@ while True:
                         print("Você não tem consultas agendadas para cancelar")
                     else:
                         data_cancelar = input("\nDigite a data da consulta para cancelar Dia/Mês/Ano: ")
-
                         horario_cancelar = input("Digite o horário da consulta para cancelar 00:00: ")
-
                         ind = -1
                         for c in range(len(Agendamentos)):
                             if Agendamentos[c][0] == CPF_paciente_logado and Agendamentos[c][2] == data_cancelar and Agendamentos[c][3] == horario_cancelar:
@@ -289,22 +287,13 @@ while True:
             print("\nBem-vindo ao menu do administrador!")
             while adm_logado == True:
                 print("\n===== MENU ADMINISTRATIVO =====")
-                print("1 - Gestão de dentistas")
-                print("2 - Gestão de consultórios")
-                print("3 - Gestão de pacientes")
-                print("4 - Gestão geral")
-                print("0 - Sair do menu administrativo")
+                print("1 - Gestão de dentistas", "\n2 - Gestão de consultórios", "\n3 - Gestão de pacientes", "\n4 - Gestão geral", "\n0 - Sair do menu administrativo")
                 opcao_adm = input("\nEscolha uma opção: ")
 
                 if opcao_adm == "1":
                     while True:
                         print("\n===== GESTÃO DE DENTISTAS =====")
-                        print("1 - Cadastrar dentista")
-                        print("2 - Listar dentistas")
-                        print("3 - Buscar dentista por ID")
-                        print("4 - Atualizar dentista")
-                        print("5 - Excluir dentista")
-                        print("0 - Voltar")
+                        print("1 - Cadastrar dentista", "\n2 - Listar dentistas", "\n3 - Buscar dentista por ID", "\n4 - Atualizar dentista", "\n5 - Excluir dentista", "\n0 - Voltar")
                         opcao_dentista = input("\nEscolha uma opção: ")
 
                         if opcao_dentista == "1":
@@ -352,10 +341,7 @@ while True:
                             if indice == -1:
                                     print("Dentista não encontrado")
                             else:
-                                print("\nID: ", Dentistas[indice][0])
-                                print("Nome: ", Dentistas[indice][1])
-                                print("CRO: ", Dentistas[indice][2])
-                                print("Especialidade: ", Dentistas[indice][3])
+                                print("\nID: ", Dentistas[indice][0], "\nNome: ", Dentistas[indice][1], "\nCRO: ", Dentistas[indice][2], "\nEspecialidade: ", Dentistas[indice][3])
                         
                         elif opcao_dentista == "4":
                             codigo = input("ID do dentista para atualizar: " )
@@ -367,9 +353,7 @@ while True:
                             if indice == -1:
                                 print("Dentista não encontrado")
                             else:
-                                print("1 - Alterar nome")
-                                print("2 - Alterar CRO")
-                                print("3 - Alterar especialidade")
+                                print("1 - Alterar nome", "\n2 - Alterar CRO", "\n3 - Alterar especialidade")
                                 campo = input("\nescolha uma opção:")
 
                                 if campo == "1":
@@ -440,11 +424,7 @@ while True:
                 elif opcao_adm == "2":
                        while True:
                         print("\n===== GESTÃO DE CONSULTORIOS =====")
-                        print("1 - Cadastrar sala")
-                        print("2 - Listar salas e dentistas vinculados")
-                        print("3 - Vincular dentista a uma sala")
-                        print("4 - Desvincular dentista de uma sala")
-                        print("0 - Voltar")
+                        print("1 - Cadastrar sala", "\n2 - Listar salas e dentistas vinculados", "\n3 - Vincular dentista a uma sala", "\n4 - Desvincular dentista de uma sala", "\n0 - Voltar")
                         opcao_sala = input("escolha uma opção:")
 
                         if opcao_sala == "1":
@@ -538,13 +518,7 @@ while True:
                 elif opcao_adm == "3":
                     while True:
                         print("\n===== GESTÃO DE PACIENTES =====")
-                        print("1 - Cadastrar paciente")
-                        print("2 - Listar pacientes")
-                        print("3 - Buscar por nome ou CPF")
-                        print("4 - Atualizar paciente")
-                        print("5 - Registrar observações / alergias")
-                        print("6 - Remover pacientes")
-                        print("0 - Voltar")
+                        print("1 - Cadastrar paciente", "\n2 - Listar pacientes", "\n3 - Buscar por nome ou CPF", "\n4 - Atualizar paciente", "\n5 - Registrar observações / alergias", "\n6 - Remover pacientes", "\n0 - Voltar")
                         opcao_cadastro = input("Escolha uma opção: ")
 
                         if opcao_cadastro == "1":
@@ -577,11 +551,7 @@ while True:
                                 print("Nenhum paciente cadastrado")
                             else:
                                 for paciente in Pacientes:
-                                    print("\nNome: ", paciente[0])
-                                    print("CPF: ", paciente[1])
-                                    print("Telefone: ", paciente[3])
-                                    print("Observações: ", paciente[4])
-                                    print("Alergias: ", paciente[5])
+                                    print("\nNome: ", paciente[0], "\nCPF: ", paciente[1], "\nTelefone: ", paciente[3], "\nObservações: ", paciente[4], "\nAlergias: ", paciente[5])
 
                         elif opcao_cadastro == "3":
                             busca = input("Informe nome ou CPF: ")
@@ -589,11 +559,7 @@ while True:
                             for paciente in Pacientes:
                                 if paciente[0] == busca or paciente[1] == busca:
                                     encontrou = True
-                                    print("\nNome: ", paciente[0]) 
-                                    print("CPF: ", paciente[1])
-                                    print("Telefone:", paciente[3])
-                                    print("Observações: ", paciente[4])
-                                    print("Alergias: ", paciente[5])
+                                    print("\nNome: ", paciente[0], "\nCPF: ", paciente[1], "\nTelefone: ", paciente[3], "\nObservações: ", paciente[4], "\nAlergias: ", paciente[5])
                             if encontrou == False:
                                 print("Paciente não encontrado.")
 
@@ -607,10 +573,7 @@ while True:
                             if indice == -1:
                                 print("Paciente não encontrado")
                             else:
-                                print("\n1 - Alterar nome")
-                                print("2 - Alterar CPF")
-                                print("3 - Alterar senha")
-                                print("4 - Alterar telefone")
+                                print("\n1 - Alterar nome", "\n2 - Alterar CPF", "\n3 - Alterar senha", "\n4 - Alterar telefone")
                                 campo = input("Escolha uma opção:")
                                 if campo == "1":
                                     novo = input("Novo nome: ")
@@ -715,11 +678,7 @@ while True:
                 elif opcao_adm == "4":
                     while True:
                         print("\n===== AGENDA GERAL =====")
-                        print("1 - Vizualizar todas as consultas")
-                        print("2 - Filtrar por dentista")
-                        print("3 - Filtrar por data")
-                        print("4 - Cancelar consulta de qualquer paciente")
-                        print("0 - Voltar")
+                        print("1 - Vizualizar todas as consultas", "\n2 - Filtrar por dentista", "\n3 - Filtrar por data", "\n4 - Cancelar consulta de qualquer paciente", "\n0 - Voltar")
                         opcao_agenda = input("Escolha uma opção: ")
 
                         if opcao_agenda == "1":
